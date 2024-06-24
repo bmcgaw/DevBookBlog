@@ -120,6 +120,20 @@ namespace DevBook.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
+                    var roleResult = await AssignRoleToUser(user,"Visitor");
+                   
+                    if (!roleResult.Succeeded) 
+                    {
+                        foreach (var error in roleResult.Errors)
+                        {
+                            ModelState.AddModelError(string.Empty, error.Description);
+                        }
+
+                        await _userManager.DeleteAsync(user);
+                        return Page();
+                    }
+                  
+
                     _logger.LogInformation("User created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);
@@ -175,6 +189,19 @@ namespace DevBook.Areas.Identity.Pages.Account
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
             return (IUserEmailStore<IdentityUser>)_userStore;
+        }
+
+        private async Task<IdentityResult> AssignRoleToUser(IdentityUser user, string role)
+        {
+            try
+            {
+                return await _userManager.AddToRoleAsync(user,role);
+            }
+            catch (Exception ex) 
+            {
+                _logger.LogError(ex, $"An error occurred trying to add {role} role to user {user.Id}.");
+                return IdentityResult.Failed(new IdentityError { Description = $"An error occurred trying to add {role} role to user." });
+            }
         }
     }
 }
