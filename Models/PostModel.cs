@@ -24,6 +24,7 @@ namespace DevBook.Models
         [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime UpdatedAt { get; set; }
 
-        public List<CommentModel>? Comments { get; set; }
+        public ICollection<CommentModel>? Comments { get; set; }
+        public ICollection<PostTagModel>? PostTags { get; set; }
     }
 }
