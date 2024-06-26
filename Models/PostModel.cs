@@ -14,9 +14,10 @@ namespace DevBook.Models
 
         [Required]
         public string? Content { get; set; }
+
         public string? UserId { get; set; }
 
-        public IdentityUser? User { get; set; }
+        public ApplicationUser? User { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime CreatedAt { get; set; } = DateTime.Now;
@@ -26,5 +27,10 @@ namespace DevBook.Models
 
         public ICollection<CommentModel>? Comments { get; set; }
         public ICollection<PostTagModel>? PostTags { get; set; }
+
+        [NotMapped]
+        public string? TagList { get; set; }
     }
 }
+
+

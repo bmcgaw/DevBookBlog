@@ -9,7 +9,7 @@ namespace DevBook.Models
         public static async Task InitializeRoles(IServiceProvider serviceProvider)
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            var userManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
+            var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
             string[] roles = { "Admin", "Visitor" };
 
@@ -27,7 +27,7 @@ namespace DevBook.Models
                 }
             }
 
-            var adminUser = new IdentityUser
+            var adminUser = new ApplicationUser
             {
                 UserName = "brian@admin.com",
                 Email = "brian@admin.com"

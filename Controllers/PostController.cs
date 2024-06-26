@@ -57,10 +57,13 @@ namespace DevBook.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Content,UserId,CreatedAt,UpdatedAt")] PostModel postModel)
+        public async Task<IActionResult> Create([Bind("Id,Title,Content,UserId,CreatedAt,UpdatedAt,TagsList")] PostModel postModel)
         {
+
             if (ModelState.IsValid)
             {
+                postModel.CreatedAt = DateTime.Now;
+           
                 _context.Add(postModel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

@@ -13,7 +13,7 @@ namespace DevBook.Models
 
         public string? UserId { get; set; }
 
-        public IdentityUser? User { get; set; }  
+        public ApplicationUser? User { get; set; }  
 
         public int PostId { get; set; }
 
