@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DevBook.Data;
 using DevBook.Models;
+using System.Security.Claims;
 
 namespace DevBook.Controllers
 {
@@ -57,11 +58,20 @@ namespace DevBook.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Content,UserId,CreatedAt,UpdatedAt,TagsList")] PostModel postModel)
+        public async Task<IActionResult> Create([Bind("Title,Content,CreatedAt,TagsList")] PostModel postModel)
         {
 
             if (ModelState.IsValid)
             {
+
+                if (User.Identity.IsAuthenticated)
+                {
+                    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                    if (!string.IsNullOrEmpty(userId))
+                        postModel.UserId = userId;
+                }
+
                 postModel.CreatedAt = DateTime.Now;
            
                 _context.Add(postModel);

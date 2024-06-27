@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -20,10 +21,8 @@ namespace DevBook.Models
         public ApplicationUser? User { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayName("Created Date")]
         public DateTime CreatedAt { get; set; } = DateTime.Now;
-
-        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime UpdatedAt { get; set; }
 
         public ICollection<CommentModel>? Comments { get; set; }
         public ICollection<PostTagModel>? PostTags { get; set; }
