@@ -58,7 +58,7 @@ namespace DevBook.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Title,Content,CreatedAt,TagsList")] PostModel postModel)
+        public async Task<IActionResult> Create([Bind("Title,Content,CreatedAt,TagList")] PostModel postModel)
         {
 
             if (ModelState.IsValid)
@@ -73,8 +73,32 @@ namespace DevBook.Controllers
                 }
 
                 postModel.CreatedAt = DateTime.Now;
-           
                 _context.Add(postModel);
+                await _context.SaveChangesAsync();
+
+                string[] postTags = postModel.TagList.Split(",",StringSplitOptions.RemoveEmptyEntries);
+                var existingTags = await _context.Tags.ToListAsync();
+
+                foreach (var tagName in postTags)
+                {
+                    string trimTag = tagName.Trim();
+                    var tag = existingTags.FirstOrDefault(t => t.Name.Equals(trimTag, StringComparison.OrdinalIgnoreCase));
+
+                    if (tag == null)
+                    {
+                        tag = new TagModel {  Name = trimTag };
+                        _context.Tags.Add(tag);
+                        await _context.SaveChangesAsync();
+                    }
+
+                    var postTag = new PostTagModel
+                    {
+                        PostId = postModel.Id,
+                        TagId = tag.Id
+                    };
+                    _context.Add(postTag);
+                }
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
