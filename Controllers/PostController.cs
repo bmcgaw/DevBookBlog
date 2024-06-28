@@ -150,7 +150,37 @@ namespace DevBook.Controllers
             {
                 try
                 {
-                    _context.Update(postModel);
+                    var existingPost = await _context.Posts
+                        .Include(p => p.PostTags)
+                        .ThenInclude(pt => pt.Tag)
+                        .FirstOrDefaultAsync(p => p.Id == id);
+
+                    if (existingPost == null) 
+                    {
+                        return NotFound();
+                    }
+
+                    existingPost.Title = postModel.Title;
+                    existingPost.Content = postModel.Content;
+
+                    var newTags = postModel.TagList.Split(",");
+                    var existingTags = existingPost.PostTags.Select(pt => pt.Tag.Name).ToList();
+
+                    var tagsToRemove = existingPost.PostTags.Where(pt => !newTags.Contains(pt.Tag.Name)).ToList();
+                    var tagsToAdd = newTags.Except(existingTags).ToList();
+
+                    _context.PostTags.RemoveRange(tagsToRemove);
+                    foreach (var tagName in tagsToAdd)
+                    {
+                        var tag = await _context.Tags.FirstOrDefaultAsync(t => t.Name == tagName.Trim());
+                        if (tag == null)
+                        {
+                            tag = new TagModel { Name = tagName.Trim() };
+                            _context.Tags.Add(tag);
+                        }
+                        existingPost.PostTags.Add(new PostTagModel { PostId = existingPost.Id, Tag = tag });
+                    }
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
