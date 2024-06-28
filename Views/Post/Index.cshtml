@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Create New Blog Post</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -22,9 +22,11 @@
                 Author
             </th>
             <th>
+                @Html.DisplayNameFor(model=> model.TagList)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.CreatedAt)
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -38,6 +40,12 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.User.FirstName) @Html.DisplayFor(modelItem => item.User.LastName)
+            </td>
+            <td>
+                @foreach (var postTag in item.PostTags)
+                {
+                    <span class="badge bg-secondary">@postTag.Tag.Name</span>
+                }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedAt)

@@ -28,6 +28,7 @@ namespace DevBook.Models
         public ICollection<PostTagModel>? PostTags { get; set; }
 
         [NotMapped]
+        [DisplayName("Tags")]
         public string? TagList { get; set; }
     }
 }

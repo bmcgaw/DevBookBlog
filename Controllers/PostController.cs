@@ -23,7 +23,11 @@ namespace DevBook.Controllers
         // GET: Post
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Posts.Include(p => p.User);
+            var applicationDbContext = _context.Posts?
+            .Include(p => p.User)?
+            .Include(p => p.PostTags)
+            .ThenInclude(pt => pt.Tag);
+    
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -114,11 +118,18 @@ namespace DevBook.Controllers
                 return NotFound();
             }
 
-            var postModel = await _context.Posts.FindAsync(id);
+            var postModel = await _context.Posts
+                .Include(p => p.PostTags)
+                .ThenInclude(pt => pt.Tag)
+                .FirstOrDefaultAsync(p => p.Id == id); 
+
             if (postModel == null)
             {
                 return NotFound();
             }
+
+            postModel.TagList = string.Join(",", postModel.PostTags.Select(pt => pt.Tag.Name));
+
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", postModel.UserId);
             return View(postModel);
         }
@@ -128,7 +139,7 @@ namespace DevBook.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Content,UserId,CreatedAt,UpdatedAt")] PostModel postModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Content,TagList")] PostModel postModel)
         {
             if (id != postModel.Id)
             {
