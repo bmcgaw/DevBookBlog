@@ -40,8 +40,10 @@ namespace DevBook.Controllers
             }
 
             var postModel = await _context.Posts
-                .Include(p => p.User)
+                .Include(p => p.PostTags)
+                .ThenInclude(pt => pt.Tag)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (postModel == null)
             {
                 return NotFound();
@@ -118,7 +120,8 @@ namespace DevBook.Controllers
                 return NotFound();
             }
 
-            var postModel = await _context.Posts
+            var postModel = await 
+                _context.Posts
                 .Include(p => p.PostTags)
                 .ThenInclude(pt => pt.Tag)
                 .FirstOrDefaultAsync(p => p.Id == id); 
@@ -208,9 +211,12 @@ namespace DevBook.Controllers
                 return NotFound();
             }
 
-            var postModel = await _context.Posts
-                .Include(p => p.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var postModel = await 
+                _context.Posts
+                .Include(p => p.PostTags)
+                .ThenInclude(pt => pt.Tag)
+                .FirstOrDefaultAsync(p => p.Id == id);
+
             if (postModel == null)
             {
                 return NotFound();
@@ -225,6 +231,13 @@ namespace DevBook.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var postModel = await _context.Posts.FindAsync(id);
+            var postTagsToRemove = await _context.PostTags.Where(pt => pt.PostId == id).ToListAsync();
+
+            if (postTagsToRemove != null)
+            {
+                _context.PostTags.RemoveRange(postTagsToRemove);
+            }
+
             if (postModel != null)
             {
                 _context.Posts.Remove(postModel);

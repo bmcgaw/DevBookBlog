@@ -4,10 +4,8 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
-
 <div>
-    <h4>PostModel</h4>
+    <h1>Post Details</h1>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -23,10 +21,13 @@
             @Html.DisplayFor(model => model.Content)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.User)
+            Tags
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.User.Id)
+            @foreach (var postTag in Model.PostTags)
+            {
+                <span class="bg-primary text-white p-1">@postTag.Tag.Name</span>
+            }
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.CreatedAt)
