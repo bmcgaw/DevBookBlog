@@ -1,8 +1,41 @@
-﻿@{
+﻿@model IEnumerable<DevBook.Models.PostModel>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Welcome to DevBook</h1>
+    <h4>A developer blog</h4>
+</div>
+<div class="container my-5">
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        @foreach (var post in Model)
+        {
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">@post.Title</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Written by @(post.User != null ? post.User.FirstName + " " + post.User.LastName : "Unknown")</h6>
+                        <p class="card-text card-content">
+                            @post.Content
+                        </p>
+                        <p>@if (post.PostTags != null && post.PostTags.Any())
+                            {
+                                @foreach (var postTag in post.PostTags)
+                                {
+                                    <span class="badge bg-secondary">@postTag.Tag.Name</span>
+                                }
+                            }
+                        </p>
+                        <a href="@Url.Action("Details", "Home", new {id = post.Id})" class="btn btn-primary">Read More</a>
+                    </div>
+                    <div class="card-footer text-muted">
+                        Created on: @post.CreatedAt.ToString("MM/dd/yyyy")
+                    </div>
+                </div>
+            </div>          
+        }
+    </div>
+
 </div>

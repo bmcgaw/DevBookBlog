@@ -360,6 +360,7 @@ a {
     text-decoration: underline;
 }
 
+
     a:hover {
         --bs-link-color-rgb: var(--bs-link-hover-color-rgb);
     }
