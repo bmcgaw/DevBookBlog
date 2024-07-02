@@ -6,12 +6,12 @@ namespace DevBook.Models
     public static class RoleInitializer
     {
        
-        public static async Task InitializeRoles(IServiceProvider serviceProvider)
+        public static async Task InitializeRoles(IServiceProvider serviceProvider, IConfiguration configuration)
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
-            string[] roles = { "Admin", "Visitor" };
+            string[] roles = { "Admin", "Moderator","Guest","Subscriber" };
 
             IdentityResult roleResult;
 
@@ -21,21 +21,22 @@ namespace DevBook.Models
 
                 if (!roleExists)
                 {
-                    roleResult = await roleManager.CreateAsync(new IdentityRole(role));                }
-                {
-                    
+                    roleResult = await roleManager.CreateAsync(new IdentityRole(role));               
                 }
+            
             }
+
+
+            var adminEmail = configuration["AdminEmail"];
+            var adminPassword = configuration["AdminPassword"];
 
             var adminUser = new ApplicationUser
             {
-                UserName = "brian@admin.com",
-                Email = "brian@admin.com"
+                UserName = adminEmail,
+                Email = adminEmail
             };
 
-            var adminPassword = "Admin123!";
-
-            var user = await userManager.FindByEmailAsync("brian@admin.com");
+            var user = await userManager.FindByEmailAsync(adminEmail);
 
             if (user == null)
             {

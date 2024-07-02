@@ -21,19 +21,6 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    try
-    {
-        await RoleInitializer.InitializeRoles(services);
-    }
-    catch (Exception ex)
-    {
-        throw new Exception("An error occurred while trying to initialize roles", ex);
-    }
-}
-
     // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())
     {
@@ -57,5 +44,19 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var configuration = services.GetRequiredService<IConfiguration>();
+    try
+    {
+        await RoleInitializer.InitializeRoles(services, configuration);
+    }
+    catch (Exception ex)
+    {
+        throw new Exception("An error occurred while trying to initialize roles", ex);
+    }
+}
 
 app.Run();

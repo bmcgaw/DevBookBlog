@@ -29,5 +29,12 @@ body {
     text-overflow: ellipsis;
 }
 
+.nav-item > .nav-link {
+    color: lightgray;
+    transition: 0.2s ease-in-out;
+}
 
+.nav-item > .nav-link:hover {
+    color: lightgray;
+}
 
