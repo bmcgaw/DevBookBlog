@@ -1,60 +1,54 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Threading.Tasks;
 
 namespace DevBook.Models
-{
-    public static class RoleInitializer
     {
-
-        public static async Task InitializeRoles(IServiceProvider serviceProvider, IConfiguration configuration)
+        public static class RoleInitializer
         {
-            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-
-            string[] roles = { "Admin", "Moderator", "Guest", "Subscriber" };
-
-            IdentityResult roleResult;
-
-            foreach (var role in roles)
+            public static async Task Initialize(IServiceProvider serviceProvider, IConfiguration configuration)
             {
-                var roleExists = await roleManager.RoleExistsAsync(role);
+                var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
-                if (!roleExists)
+                
+                string[] roles = { "Admin", "Guest" };
+
+                
+                foreach (var role in roles)
                 {
-                    roleResult = await roleManager.CreateAsync(new IdentityRole(role));
+                    if (!await roleManager.RoleExistsAsync(role))
+                    {
+                        await roleManager.CreateAsync(new IdentityRole(role));
+                    }
                 }
 
-            }
+                
+                var adminEmail = configuration["Admin:Email"];
+                var adminPassword = configuration["Admin:Password"];
+                var adminFirstName = configuration["Admin:FirstName"];
+                var adminLastName = configuration["Admin:LastName"];
 
-
-            var adminEmail = configuration["AdminEmail"];
-            var adminPassword = configuration["AdminPassword"];
-            var adminFirstName = configuration["AdminFirstName"];
-            var adminLastName = configuration["AdminLastName"];
-
-            var adminUser = new ApplicationUser
-            {
-                UserName = adminEmail,
-                Email = adminEmail,
-                FirstName = adminFirstName,
-                LastName = adminLastName
-            };
-
-            var user = await userManager.FindByEmailAsync(adminEmail);
-
-            if (user == null)
-            {
-                var createAdminUser = await userManager.CreateAsync(adminUser, adminPassword);
-                if (createAdminUser.Succeeded)
+                if (await userManager.FindByEmailAsync(adminEmail) == null)
                 {
-                    await userManager.AddToRoleAsync(adminUser, "Admin");
+                    var adminUser = new ApplicationUser
+                    {
+                        UserName = adminEmail,
+                        Email = adminEmail,
+                        FirstName = adminFirstName,
+                        LastName = adminLastName
+                    };
+
+                    var result = await userManager.CreateAsync(adminUser, adminPassword);
+                    if (result.Succeeded)
+                    {
+                        await userManager.AddToRoleAsync(adminUser, "Admin");
+                    }
                 }
-
             }
-
         }
-
     }
 
-}
+

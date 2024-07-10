@@ -55,7 +55,7 @@ using (var scope = app.Services.CreateScope())
     var configuration = services.GetRequiredService<IConfiguration>();
     try
     {
-        await RoleInitializer.InitializeRoles(services, configuration);
+        await RoleInitializer.Initialize(services, configuration);
     }
     catch (Exception ex)
     {
