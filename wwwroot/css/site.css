@@ -21,6 +21,14 @@ body {
   margin-bottom: 60px;
 }
 
+.card {
+    transition: 0.3s ease-in-out;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
 .card-content {
     display: -webkit-box;
     -webkit-line-clamp: 3;
@@ -29,12 +37,60 @@ body {
     text-overflow: ellipsis;
 }
 
-.nav-item > .nav-link {
-    color: lightgray;
+.tag-span {
+    font-size: 0.9rem;
+    background-color: #eceeef;
+    color:black;
+}
+
+.post-content {
+    font-size: 1.25rem;
+}
+
+.read-more-btn {
     transition: 0.2s ease-in-out;
 }
 
-.nav-item > .nav-link:hover {
-    color: lightgray;
+.read-more-btn:hover {
+    background-color: #eceeef;
+    color: black;
 }
+
+.comment-button {
+    transition: 0.2s ease-in-out;
+}
+
+.comment-button:hover {
+    background-color: #eceeef;
+    color: black;
+}
+
+@media (min-width:768px)
+{
+    .written-by {
+        font-size: 1.15rem;
+    }
+}
+
+footer {
+    color: #eceeef;
+}
+
+.bi-search {
+    color: white;
+    font-size: 1.2rem;
+}
+
+.search-btn:hover {
+    background-color: #eceeef;
+}
+
+.search-btn:hover > .bi-search {
+    color: darkgray;
+}
+
+
+
+
+
 

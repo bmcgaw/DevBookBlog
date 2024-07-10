@@ -1,0 +1,32 @@
+﻿@model DevBook.Models.CommentModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+    @if (User.Identity.IsAuthenticated)
+{
+    <form asp-action="Create">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group mb-3">
+            <textarea asp-for="Content" class="form-control"></textarea>
+            <span asp-validation-for="Content" class="text-danger"></span>
+        </div>
+        <input type="hidden" asp-for="PostId" />
+        <button asp-area="Guest" asp-controller="Comment" asp-action="Create" type="submit" class="btn btn-primary rounded comment-button">Add Comment</button>
+        <a asp-area="Guest" asp-controller="Home" asp-action="Index" class="btn btn-primary rounded comment-button">Back to Home</a>
+    </form>
+}
+
+else
+{
+    <a href="/Identity/Account/Login" class="btn btn-primary comment-button rounded">Login to Comment</a>
+    <a asp-area="Guest" asp-controller="Home" asp-action="Index" class="btn btn-primary rounded comment-button">Back to Home</a>
+}
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+

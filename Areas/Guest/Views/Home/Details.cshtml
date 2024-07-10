@@ -1,0 +1,80 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> _userManager
+@model DevBook.Models.PostModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="container w-100">
+    <h1 class="text-center">@Model.Title</h1>
+    <hr />
+    <div class="row">
+        <div class="post-content col-sm-10 mb-3 w-100">
+            @Model.Content
+        </div>
+        <div class="col-sm-10 mb-3">
+            @foreach (var postTag in Model.PostTags)
+            {
+                <span class="badge tag-span p-2 mb-3 rounded">@postTag.Tag.Name</span>
+            }
+        </div>
+        <div class="">
+            @{
+                var userId = Model.UserId;
+            }
+            @if (!string.IsNullOrEmpty(userId))
+            {
+                var user = await _userManager.FindByIdAsync(userId);
+                if (user != null)
+                {
+                    <p class="col-sm-6 mb-1 written-by">Written by @user.FirstName @user.LastName</p>
+                }
+            }
+            <p class="col-sm-6 mb-4">
+                @Html.DisplayFor(model => model.CreatedAt)
+            </p>
+        </div>
+    </div>
+    <h4>Comments</h4>
+    <div class="comments">
+        @if (Model.Comments != null && Model.Comments.Any())
+        {
+            var currentUser = await _userManager.GetUserAsync(User);
+
+            @foreach (var comment in Model.Comments)
+            {
+
+                <div class="card col-md-8 col-lg-5 mb-3 rounded">
+                    <div class="card-body">
+                      
+                        <p>@comment.Content</p> 
+                       
+                            <div class="card-footer p-1 text-muted">
+                                <p class="my-auto">Written by @(currentUser != null ? currentUser.FirstName + " " + currentUser.LastName : "Unknown") on @comment.CreatedAt.ToString("MM/dd/yyyy")</p>
+                            </div>                     
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <p>No comments yet.</p>
+        }
+    </div>
+    <div class="col-md-8 col-lg-5">
+        @if (User.Identity.IsAuthenticated)
+        {
+            <h4>Add a Comment</h4>
+        }
+       
+        @await Html.PartialAsync("../Comment/_Create", new DevBook.Models.CommentModel { PostId = Model.Id })
+    </div>
+</div>
+
+<partial name="_Notifications" />
+
+
+
+
+

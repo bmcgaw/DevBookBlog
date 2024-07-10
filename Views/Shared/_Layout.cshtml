@@ -7,12 +7,14 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/DevBook.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-primary border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">DevBook</a>
+                <a class="navbar-brand" asp-area="Guest" asp-controller="Home" asp-action="Index">DevBook</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -20,7 +22,7 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Blog</a>
+                            <a class="nav-link" asp-area="Guest" asp-controller="Home" asp-action="Index">Blog</a>
                         </li>
                         <li class="nav-item portfolio">
                             <a class="nav-link" href="https://brmdev.netlify.app">Portfolio</a>
@@ -28,15 +30,19 @@
                         @if (User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Post" asp-action="Create">Create New Post</a>
+                                <a class="nav-link" asp-area="Admin" asp-controller="Post" asp-action="Create">Create New Post</a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Post" asp-action="Index">Admin</a>
+                                <a class="nav-link" asp-area="Admin" asp-controller="Post" asp-action="Index">Admin</a>
                             </li>
                         }
                     </ul>
                     <partial name="_LoginPartial" />
+                    <form class="  d-flex">
+                        <input name="SearchWord" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                        <button asp-area="Guest" asp-controller="Home" asp-action="SearchPosts" class="btn border my-sm-0 search-btn" type="submit" value="filter"><i class="bi bi-search"></i></button>
+                    </form>
                 </div>
             </div>
         </nav>
@@ -47,7 +53,7 @@
         </main>
     </div>
 
-    <footer class="border-top footer bg-primary text-center text-muted">
+    <footer class="border-top footer bg-primary text-center">
         <div class="container">
             &copy; 2024 - DevBook - Created by Brian McGaw
         </div>

@@ -30,6 +30,8 @@ namespace DevBook.Models
         [NotMapped]
         [DisplayName("Tags")]
         public string? TagList { get; set; }
+
+        public byte[]? PostImage { get; set; }
     }
 }
 

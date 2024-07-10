@@ -1,0 +1,54 @@
+﻿@model IEnumerable<DevBook.Models.PostModel>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Dev Book</h1>
+    <h4>Web Development Blog</h4>
+</div>
+<div class="container my-5">
+    <div class="row row-cols-1 row-cols-md-3 g-4 text-center">
+        @if (Model.Count() == 0)
+        {
+            <h4 class="w-100 text-center mt-3">No matching results...</h4>
+        }
+        @foreach (var post in Model)
+        {
+            <div class="">
+                <div class="card rounded shadow">
+                    <div class="card-body">
+                        <h4 class="card-title mb-3">@post.Title</h4>
+                        <hr />
+                        @if (post.PostImage != null)
+                        {
+                            <img class="img-fluid rounded" src="data:image/jpeg;base64,@Convert.ToBase64String(post.PostImage)" alt="Post Image" />
+                        }
+                        else
+                        {
+                            <img class="img-fluid rounded" src="/images/testphoto.jpg" />   <img class="img-fluid rounded" src="/images/testphoto.jpg" />
+                        }
+                        <hr />
+                        <p class="card-text card-content">
+                            @post.Content
+                        </p>
+                        <p>
+                            @if (post.PostTags != null && post.PostTags.Any())
+                            {
+                                @foreach (var postTag in post.PostTags)
+                                {
+                                    <span class="badge tag-span p-2 mt-1 rounded">@postTag.Tag.Name</span>
+                                }
+                            }
+                        </p>
+                        <a href="@Url.Action("Details", "Home", new {id = post.Id})" class="btn btn-primary rounded read-more-btn">Read More</a>
+                    </div>
+                    <div class="card-footer text-muted d-flex justify-content-between">
+                        <span>@(post.User != null ? post.User.FirstName + " " + post.User.LastName : "Unknown")</span>@post.CreatedAt.ToString("MM/dd/yyyy")
+                    </div>
+                </div>
+            </div>
+    }
+
+</div>
