@@ -1,9 +1,8 @@
 ﻿@model DevBook.Models.CommentModel
-
 @{
     ViewData["Title"] = "Create";
 }
-    @if (User.Identity.IsAuthenticated)
+@if (User.Identity.IsAuthenticated)
 {
     <form asp-action="Create">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -13,14 +12,14 @@
         </div>
         <input type="hidden" asp-for="PostId" />
         <button asp-area="Guest" asp-controller="Comment" asp-action="Create" type="submit" class="btn btn-primary rounded comment-button">Add Comment</button>
-        <a asp-area="Guest" asp-controller="Home" asp-action="Index" class="btn btn-primary rounded comment-button">Back to Home</a>
+        <a asp-area="Guest" asp-controller="Home" asp-action="Index" class="btn btn-primary rounded comment-button mx-3">Back to Home</a>
     </form>
 }
 
 else
 {
     <a href="/Identity/Account/Login" class="btn btn-primary comment-button rounded">Login to Comment</a>
-    <a asp-area="Guest" asp-controller="Home" asp-action="Index" class="btn btn-primary rounded comment-button">Back to Home</a>
+    <a asp-area="Guest" asp-controller="Home" asp-action="Index" class="btn btn-primary rounded comment-button mx-3">Back to Home</a>
 }
 
 
@@ -29,4 +28,3 @@ else
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
-

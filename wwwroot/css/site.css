@@ -89,6 +89,29 @@ footer {
     color: darkgray;
 }
 
+.btn:hover {
+    background-color: #eceeef;
+    color: black;
+}
+
+.home-index-header {
+    height: 175px;
+}
+
+.navbar {
+    background: linear-gradient(to bottom, transparent, gray);
+}
+
+@media (min-width:768px) {
+    .navbar {
+        height: 80px;
+    }
+}
+
+.footer {
+    background: linear-gradient(to top, transparent, gray);
+}
+
 
 
 

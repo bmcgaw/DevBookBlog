@@ -12,9 +12,9 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-primary border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-primary border-bottom box-shadow">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="Guest" asp-controller="Home" asp-action="Index">DevBook</a>
+                <a class="navbar-brand" asp-area="Guest" asp-controller="Home" asp-action="Index">Dev <i class="bi bi-book"></i> Book</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -24,22 +24,29 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="Guest" asp-controller="Home" asp-action="Index">Blog</a>
                         </li>
-                        <li class="nav-item portfolio">
+                     @*    <li class="nav-item portfolio">
                             <a class="nav-link" href="https://brmdev.netlify.app">Portfolio</a>
-                        </li>
-                        @if (User.IsInRole("Admin"))
+                        </li> *@
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
                         {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="Admin" asp-controller="Post" asp-action="Create">Create New Post</a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Content Management
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li class="nav-item">
+                                        <a class="dropdown-item" asp-area="Admin" asp-controller="Post" asp-action="Create">Create Post</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="dropdown-item" asp-area="Admin" asp-controller="Post" asp-action="Index">Manage Posts</a>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                </ul>
                             </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="Admin" asp-controller="Post" asp-action="Index">Admin</a>
-                            </li>
-                        }
+                        }                 
                     </ul>
                     <partial name="_LoginPartial" />
-                    <form class="  d-flex">
+                    <form class="d-flex">
                         <input name="SearchWord" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                         <button asp-area="Guest" asp-controller="Home" asp-action="SearchPosts" class="btn border my-sm-0 search-btn" type="submit" value="filter"><i class="bi bi-search"></i></button>
                     </form>
@@ -47,12 +54,11 @@
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div class="">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
-
     <footer class="border-top footer bg-primary text-center">
         <div class="container">
             &copy; 2024 - DevBook - Created by Brian McGaw
@@ -61,6 +67,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdn.tiny.cloud/1/puzx085n1e4ic05is60sg78jswl730r6rdozd7ob5sl6zjj3/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
