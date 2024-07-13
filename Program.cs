@@ -21,6 +21,18 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultUI()
     .AddDefaultTokenProviders();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+            .AllowAnyMethod().AllowAnyHeader();
+        });
+});
+
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
@@ -41,13 +53,35 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseCors("AllowAll");
+app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{area=Guest}/{controller=Home}/{action=Index}/{id?}");
-app.MapRazorPages();
+app.UseEndpoints(endpoints =>
+{
+    // Define route for Admin API
+    endpoints.MapAreaControllerRoute(
+        name: "AdminApi",
+        areaName: "Admin",
+        pattern: "Admin/api/{controller=BlogApi}/{action=Index}/{id?}");
+
+    // Default route
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{area=Guest}/{controller=Home}/{action=Index}/{id?}");
+
+    // Register API controllers
+    endpoints.MapControllers();
+
+    // Register Razor Pages
+    endpoints.MapRazorPages();
+});
+
+
+//app.MapControllerRoute(
+//    name: "default",
+//    pattern: "{area=Guest}/{controller=Home}/{action=Index}/{id?}");
+//app.MapRazorPages();
 
 using (var scope = app.Services.CreateScope())
 {
