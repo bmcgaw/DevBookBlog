@@ -4,45 +4,64 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit Blog Post</h1>
+        <div class="container my-3">
+            <h1>Edit Post</h1>
+            <hr />
+            <div class="d-flex">
+                <div class="col-md-9">
+                    <form asp-action="Edit" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-group mb-3">
+                                <label asp-for="Title" class="control-label"></label>
+                                <input asp-for="Title" class="form-control" />
+                                <span asp-validation-for="Title" class="text-danger"></span>
+                            </div>
+                                <div class="form-group mb-3">
+                                    <label asp-for="Content" class="control-label"></label>
+                                    <textarea asp-for="Content" class="form-control"></textarea>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label asp-for="TagList" class="control-label">Tags (comma-separated)</label>
+                                    <input asp-for="TagList" class="form-control" />
+                                    <span asp-validation-for="TagList" class="text-danger"></span>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label asp-for="PostImage" class="control-label">Edit image if desired</label>
+                                    <input asp-for="PostImage" type="file" class="form-control" />
+                                    <span asp-validation-for="PostImage" class="text-danger"></span>
+                                </div>
+                                    <div class="form-group mb-3 d-flex">
+                                        <input type="submit" value="Save" class="btn btn-primary rounded" />
+                                        <a class="mx-3 btn btn-primary rounded" asp-action="Index">Back to List</a>
+                                    </div>
+                    </form>
+                </div>
+                <div class="col-md-3">
+                    @if (Model.PostImage != null)
+                    {
+                        <img class="img-fluid rounded m-3" src="data:image/jpeg;base64,@Convert.ToBase64String(Model.PostImage)" alt="Post Image" />
+                    }
+                </div>
+            </div>
+        </div>
 
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Content" class="control-label"></label>
-                <input asp-for="Content" class="form-control" />
-                <span asp-validation-for="Content" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-3">
-                <label asp-for="TagList" class="control-label"></label>
-                <input asp-for="TagList" class="form-control" />
-                <span asp-validation-for="TagList" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-3">
-                <label asp-for="PostImage" class="control-label">Edit image if desired</label>
-                <input asp-for="PostImage" type="file" class="form-control" />
-                <span asp-validation-for="PostImage" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-3">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+        @section Scripts {
+            <script>
+                tinymce.init({
+                    selector: 'textarea',
+                    plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown',
+                    toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+                    tinycomments_mode: 'embedded',
+                    tinycomments_author: 'Author name',
+                    mergetags_list: [
+                        { value: 'First.Name', title: 'First Name' },
+                        { value: 'Email', title: 'Email' },
+                    ],
+                    ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
+                });
+            </script>
+            @{
+                await Html.RenderPartialAsync("_ValidationScriptsPartial");
+            }
+        }

@@ -24,9 +24,9 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="Guest" asp-controller="Home" asp-action="Index">Blog</a>
                         </li>
-                     @*    <li class="nav-item portfolio">
+                        <li class="nav-item portfolio">
                             <a class="nav-link" href="https://brmdev.netlify.app">Portfolio</a>
-                        </li> *@
+                        </li>
                         @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
                         {
                             <li class="nav-item dropdown">

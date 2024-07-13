@@ -29,9 +29,9 @@
                             <img class="img-fluid rounded" src="/images/testphoto.jpg" />   <img class="img-fluid rounded" src="/images/testphoto.jpg" />
                         }
                         <hr />
-                        <p class="card-text card-content">
-                            @post.Content
-                        </p>
+                        <div class="card-text card-content">
+                            @Html.Raw(@post.Content)
+                        </div>
                         <p>
                             @if (post.PostTags != null && post.PostTags.Any())
                             {

@@ -1,17 +1,17 @@
-﻿@using Microsoft.AspNetCore.Identity
+﻿@using DevBook.Areas.Guest.Controllers
+@using Microsoft.AspNetCore.Identity
 @inject UserManager<ApplicationUser> _userManager
 @model DevBook.Models.PostModel
 
 @{
     ViewData["Title"] = "Details";
 }
-
 <div class="container my-3">
     <h1 class="text-center">@Model.Title</h1>
     <hr />
     <div class="row">
         <div class="post-content col-sm-10 mb-3 w-100">
-            @Model.Content
+            @Html.Raw(Model.Content)
         </div>
         <div class="col-sm-10 mb-3">
             @foreach (var postTag in Model.PostTags)
@@ -40,21 +40,22 @@
     <div class="comments">
         @if (Model.Comments != null && Model.Comments.Any())
         {
-            var currentUser = await _userManager.GetUserAsync(User);
 
             @foreach (var comment in Model.Comments)
             {
 
+                var commentUser = await _userManager.FindByIdAsync(comment.UserId);
                 <div class="card col-md-8 col-lg-5 mb-3 rounded">
-                    <div class="card-body">
-                      
-                        <p>@comment.Content</p> 
                        
-                            <div class="card-footer p-1 text-muted">
-                                <p class="my-auto">Written by @(currentUser != null ? currentUser.FirstName + " " + currentUser.LastName : "Unknown") on @comment.CreatedAt.ToString("MM/dd/yyyy")</p>
-                            </div>                     
+                        <div class="card-body">
+
+                            <p>@comment.Content</p>
+
+                            <div class="card-footer p-1 text-muted">                   
+                                <p class="my-auto">Written by @commentUser.FirstName @commentUser.LastName on @comment.CreatedAt.ToString("MM/dd/yyyy")</p>
+                            </div>
+                        </div> 
                     </div>
-                </div>
             }
         }
         else
@@ -71,10 +72,4 @@
         @await Html.PartialAsync("../Comment/_Create", new DevBook.Models.CommentModel { PostId = Model.Id })
     </div>
 </div>
-
 <partial name="_Notifications" />
-
-
-
-
-

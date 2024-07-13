@@ -22,7 +22,8 @@ namespace DevBook.Areas.Admin.Controllers
             var applicationDbContext = _context.Posts?
             .Include(p => p.User)?
             .Include(p => p.PostTags)
-            .ThenInclude(pt => pt.Tag);
+            .ThenInclude(pt => pt.Tag)
+            .Include(p => p.Comments);
 
             return View(await applicationDbContext.ToListAsync());
         }
@@ -140,7 +141,7 @@ namespace DevBook.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Content,TagList")] PostModel postModel, IFormFile postImage)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Content,TagList")] PostModel postModel, IFormFile? postImage)
         {
             if (id != postModel.Id)
             {

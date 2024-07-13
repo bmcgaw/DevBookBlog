@@ -16,7 +16,7 @@
                 <h1 class="text-center p-3 mx-1 rounded" style="background-color:#eceeef;">@item.Title</h1>
     <div class="">
         <div class="post-content mb-3 w-100">
-            @item.Content
+            @Html.Raw(@item.Content)
         </div>
         <div class="mb-3">
             @foreach (var postTag in item.PostTags)

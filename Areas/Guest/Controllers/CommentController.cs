@@ -17,7 +17,7 @@ namespace DevBook.Areas.Guest.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Comments;
+            var applicationDbContext = _context.Comments.Include(c => c.User);
 
             return View(await applicationDbContext.ToListAsync());
         }
@@ -30,7 +30,7 @@ namespace DevBook.Areas.Guest.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Content,PostId")] CommentModel commentModel)
+        public async Task<IActionResult> Create([Bind("UserId,Content,PostId")] CommentModel commentModel)
         {
             if (ModelState.IsValid)
             {

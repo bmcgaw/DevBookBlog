@@ -24,7 +24,8 @@ namespace DevBook.Areas.Guest.Controllers
             var applicationDbContext = _context.Posts?
            .Include(p => p.User)?
            .Include(p => p.PostTags)
-           .ThenInclude(pt => pt.Tag);
+           .ThenInclude(pt => pt.Tag)
+           .Include(p => p.Comments);
 
             return View(await applicationDbContext.ToListAsync());
         }
