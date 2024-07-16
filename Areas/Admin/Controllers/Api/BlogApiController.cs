@@ -3,9 +3,9 @@ using DevBook.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DevBook.Areas.Admin.Controllers
+namespace DevBook.Areas.Admin.Controllers.Api
 {
-    [Route("api/[controller]")]
+    [Route("Admin/Api/BlogApi")]
     [ApiController]
     public class BlogApiController : ControllerBase
     {
