@@ -20,13 +20,13 @@
                     <div class="card-body">
                         <h4 class="card-title mb-3">@post.Title</h4>
                         <hr />
-                        @if (post.PostImage != null)
+                        @if (post.ImageUrl != null)
                         {
-                            <img class="img-thumbnail post-image rounded" src="data:image/jpeg;base64,@Convert.ToBase64String(post.PostImage)" alt="Post Image" />
+                            <img class="img-thumbnail post-image rounded" src="@post.ImageUrl" alt="Post Image" />
                         }
                         else
                         {
-                            <img class="img-fluid rounded" src="/images/testphoto.jpg" />   <img class="img-fluid rounded" src="/images/testphoto.jpg" />
+                            <img class="img-thumbnail rounded" src="/images/testphoto.jpg" />
                         }
                         <hr />
                         <div class="card-text card-content">

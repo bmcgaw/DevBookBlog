@@ -42,15 +42,12 @@
                 <input type="submit" value="Delete" class="btn btn-primary rounded" />
                 <a asp-action="Index" class="btn btn-primary rounded mx-3">Back to List</a>
             </form>
-            @*     <a class="btn btn-primary rounded" asp-action="Edit" asp-route-id="@item.Id">Edit Post</a>
-            <a class="btn btn-primary rounded" asp-action="Delete" asp-route-id="@item.Id">Delete Post</a>
-            <a asp-action="Create" class="btn btn-primary rounded">Create New Post</a> *@
             <hr />
         </div>
         <div class="col-3">
-            @if (Model.PostImage != null)
+            @if (Model.ImageUrl != null)
             {
-                <img class="img-fluid rounded" src="data:image/jpeg;base64,@Convert.ToBase64String(Model.PostImage)" alt="Post Image" />
+                <img class="img-fluid rounded" src="@Model.ImageUrl" alt="Post Image" />
             }
         </div>
     </div>

@@ -46,9 +46,9 @@
                 <hr />
             </div>
             <div class="col-3">
-                @if (item.PostImage != null)
+                @if (item.ImageUrl != null)
                 {
-                    <img class="img-fluid rounded" src="data:image/jpeg;base64,@Convert.ToBase64String(item.PostImage)" alt="Post Image" />
+                    <img class="img-fluid rounded" src="@item.ImageUrl" alt="Post Image" />
                 }
             </div>
         </div>

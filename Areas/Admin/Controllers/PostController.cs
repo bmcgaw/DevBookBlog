@@ -11,10 +11,12 @@ namespace DevBook.Areas.Admin.Controllers
     public class PostController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public PostController(ApplicationDbContext context)
+        public PostController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public async Task<IActionResult> Index()
@@ -56,7 +58,7 @@ namespace DevBook.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Title,Content,CreatedAt,TagList")] PostModel postModel, IFormFile postImage)
+        public async Task<IActionResult> Create([Bind("Id,Title,Content,CreatedAt,TagList")] PostModel postModel, IFormFile? file)
         {
             if (ModelState.IsValid)
             {
@@ -69,13 +71,17 @@ namespace DevBook.Areas.Admin.Controllers
                         postModel.UserId = userId;
                 }
 
-                if (postImage != null && postImage.Length > 0)
+                string wwwRootPath = _webHostEnvironment.WebRootPath;
+                if (file != null && file.Length > 0)
                 {
-                    using (var memoryStream = new MemoryStream())
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    string postPath = Path.Combine(wwwRootPath, @"images\post");
+
+                    using (var fileStream = new FileStream(Path.Combine(postPath, fileName), FileMode.Create))
                     {
-                        await postImage.CopyToAsync(memoryStream);
-                        postModel.PostImage = memoryStream.ToArray();
+                        file.CopyTo(fileStream);
                     }
+                    postModel.ImageUrl = @"\images\post\" + fileName;
                 }
 
                 // Set the created date and save
@@ -141,7 +147,7 @@ namespace DevBook.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Content,TagList")] PostModel postModel, IFormFile? postImage)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Content,CreatedAt,TagList")] PostModel postModel, IFormFile? file)
         {
             if (id != postModel.Id)
             {
@@ -162,13 +168,17 @@ namespace DevBook.Areas.Admin.Controllers
                         return NotFound();
                     }
 
-                    if (postImage != null && postImage.Length > 0)
+                    string wwwRootPath = _webHostEnvironment.WebRootPath;
+                    if (file != null && file.Length > 0)
                     {
-                        using (var memoryStream = new MemoryStream())
+                        string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                        string postPath = Path.Combine(wwwRootPath, @"images\post");
+
+                        using (var fileStream = new FileStream(Path.Combine(postPath, fileName), FileMode.Create))
                         {
-                            await postImage.CopyToAsync(memoryStream);
-                            existingPost.PostImage = memoryStream.ToArray();
+                            file.CopyTo(fileStream);
                         }
+                        existingPost.ImageUrl = @"\images\post\" + fileName;
                     }
 
                     existingPost.Title = postModel.Title;
