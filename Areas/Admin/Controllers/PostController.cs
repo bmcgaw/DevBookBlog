@@ -174,6 +174,16 @@ namespace DevBook.Areas.Admin.Controllers
                         string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
                         string postPath = Path.Combine(wwwRootPath, @"images\post");
 
+                        if (!string.IsNullOrEmpty(existingPost.ImageUrl))
+                        {
+                            string oldImagePath = Path.Combine(wwwRootPath, existingPost.ImageUrl.TrimStart('\\'));
+
+                            if (System.IO.File.Exists(oldImagePath))
+                            {
+                                System.IO.File.Delete(oldImagePath);
+                            }
+                        }
+
                         using (var fileStream = new FileStream(Path.Combine(postPath, fileName), FileMode.Create))
                         {
                             file.CopyTo(fileStream);
@@ -246,6 +256,18 @@ namespace DevBook.Areas.Admin.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var postModel = await _context.Posts.FindAsync(id);
+
+            string wwwRootPath = _webHostEnvironment.WebRootPath;
+            if (!string.IsNullOrEmpty(postModel.ImageUrl))
+            {
+                string oldImagePath = Path.Combine(wwwRootPath, postModel.ImageUrl.TrimStart('\\'));
+
+                if (System.IO.File.Exists(oldImagePath))
+                {
+                    System.IO.File.Delete(oldImagePath);
+                }
+            }
+
             var postTagsToRemove = await _context.PostTags.Where(pt => pt.PostId == id).ToListAsync();
             var commentsToRemove = await _context.Comments.Where(c => c.PostId == id).ToListAsync();
 
