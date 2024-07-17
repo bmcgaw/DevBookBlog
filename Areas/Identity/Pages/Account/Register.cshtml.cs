@@ -10,9 +10,9 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
-using DevBook.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using DevBook.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -99,6 +99,7 @@ namespace DevBook.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
 
+
             [Required]
             [Display(Name = "First Name")]
             public string FirstName { get; set; }
@@ -111,6 +112,7 @@ namespace DevBook.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
+
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
@@ -131,9 +133,9 @@ namespace DevBook.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
-                    var roleResult = await AssignRoleToUser(user,"Visitor");
-                   
-                    if (!roleResult.Succeeded) 
+                    var roleResult = await AssignRoleToUser(user, "Guest");
+
+                    if (!roleResult.Succeeded)
                     {
                         foreach (var error in roleResult.Errors)
                         {
@@ -143,7 +145,7 @@ namespace DevBook.Areas.Identity.Pages.Account
                         await _userManager.DeleteAsync(user);
                         return Page();
                     }
-                  
+
 
                     _logger.LogInformation("User created a new account with password.");
 
@@ -206,9 +208,9 @@ namespace DevBook.Areas.Identity.Pages.Account
         {
             try
             {
-                return await _userManager.AddToRoleAsync(user,role);
+                return await _userManager.AddToRoleAsync(user, role);
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 _logger.LogError(ex, $"An error occurred trying to add {role} role to user {user.Id}.");
                 return IdentityResult.Failed(new IdentityError { Description = $"An error occurred trying to add {role} role to user." });
