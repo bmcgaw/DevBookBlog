@@ -291,6 +291,15 @@ namespace DevBook.Areas.Admin.Controllers
         }
 
 
+        // API Endpoint
+        [HttpGet]
+        public IActionResult GetPosts()
+        {
+            List<PostModel> posts = _context.Posts.ToList();
+            return Json(new { data = posts });
+        }
+
+
         private bool PostModelExists(int id)
         {
             return _context.Posts.Any(e => e.Id == id);

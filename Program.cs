@@ -57,25 +57,11 @@ app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseEndpoints(endpoints =>
-{
-    // Define route for Admin API
-    endpoints.MapAreaControllerRoute(
-        name: "AdminApi",
-        areaName: "Admin",
-        pattern: "Admin/api/{controller=BlogApi}/{action=Index}/{id?}");
 
-    // Default route
-    endpoints.MapControllerRoute(
-        name: "default",
-        pattern: "{area=Guest}/{controller=Home}/{action=Index}/{id?}");
-
-    // Register API controllers
-    endpoints.MapControllers();
-
-    // Register Razor Pages
-    endpoints.MapRazorPages();
-});
+app.MapRazorPages();
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{area=Guest}/{controller=Home}/{action=Index}/{id?}");
 
 
 using (var scope = app.Services.CreateScope())
