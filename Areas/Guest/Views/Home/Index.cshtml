@@ -16,7 +16,7 @@
         @foreach (var post in Model)
         {
             <div>
-                <div class="card rounded shadow mb-5">
+                <div class="card post-card rounded shadow mb-5">
                     <div class="card-body">
                         <h4 class="card-title mb-3">@post.Title</h4>
                         <hr />
@@ -50,3 +50,4 @@
             </div>
     }
 </div>
+    <partial name="_Notifications" />

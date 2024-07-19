@@ -9,20 +9,27 @@
     }
 }
 
-<h1>Manage your account</h1>
-
-<div>
-    <h2>Change your account settings</h2>
-    <hr />
-    <div class="row">
-        <div class="col-md-3">
-            <partial name="_ManageNav" />
-        </div>
-        <div class="col-md-9">
-            @RenderBody()
+<div class="card mx-auto mt-5 rounded col-md-10 shadow bg-white border-0">
+    <div class="card-header border-0 bg-white m-lg-0 py-0">
+        <h1 class="text-center pt-4">Manage your account</h1>
+    </div>
+    <div class="card-body">
+        <div>
+            <hr />
+            <div class="row">
+                <div class="col-md-3 mb-4">
+                    <partial name="_ManageNav" />
+                </div>
+                <div class="col-md-9">
+                    @RenderBody()
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
+
+
 
 @section Scripts {
     @RenderSection("Scripts", required: false)

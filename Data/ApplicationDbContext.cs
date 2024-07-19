@@ -38,6 +38,7 @@ namespace DevBook.Data
                 .HasOne(c => c.Post)
                 .WithMany(p => p.Comments)
                 .HasForeignKey(c => c.PostId);
+
         }
 
     }

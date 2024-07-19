@@ -21,11 +21,11 @@ body {
   margin-bottom: 60px;
 }
 
-.card {
+.post-card {
     transition: 0.3s ease-in-out;
 }
 
-.card:hover {
+.post-card:hover {
     transform: scale(1.05);
 }
 
