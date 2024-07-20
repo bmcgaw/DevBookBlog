@@ -4,7 +4,7 @@
 }
 
 <div class="text-center home-index-header d-flex flex-column justify-content-center">
-    <h1 class="display-4">Dev <i class="bi bi-book"></i> Book</h1>
+    <h1 class="display-4">Dev<img src="~/images/book.png" class="mx-2" style="width:4rem;"/>Book</h1>
     <h4>Web Development Blog</h4>
 </div>
 <div class="container">
@@ -37,7 +37,7 @@
                             {
                                 @foreach (var postTag in post.PostTags)
                                 {
-                                    <span class="badge tag-span p-2 mt-1 rounded">@postTag.Tag.Name</span>
+                                    <span class="badge tag-span p-2 mt-2 rounded">@postTag.Tag.Name</span>
                                 }
                             }
                         </p>

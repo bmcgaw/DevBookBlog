@@ -92,8 +92,12 @@ namespace DevBook.Areas.Identity.Pages.Account.Manage
                 }
             }
 
+            var comments = await _context.Comments.Where(c => c.UserId == user.Id).ToListAsync();
             var posts = await _context.Posts.Where(p => p.UserId == user.Id).ToListAsync();
+
+            _context.RemoveRange(comments);
             _context.RemoveRange(posts);
+
             await _context.SaveChangesAsync();
 
 
