@@ -55,6 +55,9 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_F207833EB7804A61A4AB13D3EEC1CB52 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_9C13506784D14E22A79B48734AEE6147 }}
 
+      - name: Apply EF Core Migrations
+        run: dotnet ef database update --connection "Server=tcp:devbook.database.windows.net,1433;Initial Catalog=DevBook;Persist Security Info=False;User ID=sqladmin;Password=Admin123*;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+        
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
