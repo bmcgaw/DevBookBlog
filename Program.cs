@@ -8,6 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.AddEnvironmentVariables();
 
+Console.WriteLine($"Environment: {builder.Environment.EnvironmentName}");
+
 string connectionString;
 if (builder.Environment.IsDevelopment())
 {
@@ -15,8 +17,10 @@ if (builder.Environment.IsDevelopment())
 }
 else
 {
-    connectionString = Environment.GetEnvironmentVariable("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found in environment variables.");
+    connectionString = builder.Configuration["ConnectionStrings:DefaultConnection"] ?? throw new InvalidOperationException("Connection string 'ConnectionStrings__DefaultConnection' not found in environment variables.");
 }
+
+Console.WriteLine($"Connection String: {connectionString}");
 
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
