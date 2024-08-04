@@ -3,12 +3,18 @@ using DevBook.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System.Collections;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.AddEnvironmentVariables();
 
 Console.WriteLine($"Environment: {builder.Environment.EnvironmentName}");
+
+foreach (DictionaryEntry de in Environment.GetEnvironmentVariables())
+{
+    Console.WriteLine($"  {de.Key} = {de.Value}");
+}
 
 string connectionString;
 if (builder.Environment.IsDevelopment())
