@@ -31,7 +31,12 @@ namespace DevBook.Models
                 var adminFirstName = configuration["Admin:FirstName"];
                 var adminLastName = configuration["Admin:LastName"];
 
-                if (await userManager.FindByEmailAsync(adminEmail) == null)
+                Console.WriteLine($"Admin Email: {adminEmail}");
+                Console.WriteLine($"Admin Password: {adminPassword}");
+                Console.WriteLine($"Admin First Name: {adminFirstName}");
+                Console.WriteLine($"Admin Last Name: {adminLastName}");
+
+            if (await userManager.FindByEmailAsync(adminEmail) == null)
                 {
                     var adminUser = new ApplicationUser
                     {

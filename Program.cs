@@ -23,7 +23,7 @@ if (builder.Environment.IsDevelopment())
 }
 else
 {
-    connectionString = Environment.GetEnvironmentVariable("SQLCONNSTR_ConnectionStrings__DefaultConnection") ?? throw new InvalidOperationException("Connection string 'SQLCONNSTR_ConnectionStrings__DefaultConnection' not found in environment variables.");
+    connectionString = Environment.GetEnvironmentVariable("SQLCONNSTR_DefaultConnection") ?? throw new InvalidOperationException("Connection string 'SQLCONNSTR_DefaultConnection' not found in environment variables.");
 }
 
 Console.WriteLine($"Connection String: {connectionString}");
